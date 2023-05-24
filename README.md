@@ -3,8 +3,6 @@
 ImageAI Wizard is a Python library that provides an easy-to-use interface for generating 
 various data about images using the OpenAI API.
 
-Open AI reference: https://platform.openai.com/docs/api-reference/completions/create
-
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## *installation*
