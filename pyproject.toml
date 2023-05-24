@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["imageai_wizard"]
+
+[project]
+name = "imageai_wizard"
+version = "0.0.0"
+description = "An OpenAI API powered image utility library."
+readme = "README.md"
+authors = [{ name = "Lukas Twist", email = "itsluketwist@gmail.com" }]
+license = { file = "LICENSE" }
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+keywords = ["image", "utility"]
+dependencies = [
+    "openai",
+]
+requires-python = ">=3.10"
+
+[project.optional-dependencies]
+dev = [
+    "pre-commit",
+    "pytest",
+]
+
+
+[project.urls]
+Homepage = "https://github.com/itsluketwist/imageai-wizard"
