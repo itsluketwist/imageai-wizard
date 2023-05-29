@@ -13,6 +13,7 @@ from .constants import (
     Tone,
 )
 from .types import ImageAnalysis
+from .utils import is_string_url
 
 
 class Wizard:
@@ -108,7 +109,7 @@ class Wizard:
 
     def generate_description(
         self,
-        image_url: str,
+        image: str,
         length: int = 50,
         persona: Union[Persona, str, None] = None,
         tone: Union[Tone, str, None] = None,
@@ -118,8 +119,8 @@ class Wizard:
 
         Parameters
         ----------
-        image_url : str
-            The url of the image.
+        image : str
+            The url or description of the image.
         length : int
             Approximate length of the response.
         persona : Union[Persona, str, None]
@@ -132,7 +133,8 @@ class Wizard:
         str
             A detailed description of the image.
         """
-        prompt = f"Provide a detailed description for this image: {image_url}"
+        image_type = "url" if is_string_url(image) else "description"
+        prompt = f"Provide a detailed description for this image {image_type}: {image}"
 
         return self._text_generation_prompt(
             initial_prompt=prompt,
@@ -143,7 +145,7 @@ class Wizard:
 
     def generate_caption(
         self,
-        image_url: str,
+        image: str,
         length=20,
         persona: Union[Persona, str, None] = None,
         tone: Union[Tone, str, None] = None,
@@ -153,8 +155,8 @@ class Wizard:
 
         Parameters
         ----------
-        image_url : str
-            The url of the image.
+        image : str
+            The url or description of the image.
         length : int
             Approximate length of the response.
         persona : Union[Persona, str, None]
@@ -167,7 +169,11 @@ class Wizard:
         str
             An interesting caption for the image.
         """
-        prompt = f"Provide a short, interesting and catchy caption for this image: {image_url}"
+        image_type = "url" if is_string_url(image) else "description"
+        prompt = (
+            f"Provide a short, interesting and catchy caption for this "
+            f"image {image_type}: {image}"
+        )
 
         return self._text_generation_prompt(
             initial_prompt=prompt,
@@ -178,7 +184,7 @@ class Wizard:
 
     def generate_title(
         self,
-        image_url: str,
+        image: str,
         length=10,
         persona: Union[Persona, str, None] = None,
         tone: Union[Tone, str, None] = None,
@@ -188,8 +194,8 @@ class Wizard:
 
         Parameters
         ----------
-        image_url : str
-            The url of the image.
+        image : str
+            The url or description of the image.
         length : int
             Approximate length of the response.
         persona : Union[Persona, str, None]
@@ -202,9 +208,10 @@ class Wizard:
         str
             A gripping title for the image.
         """
+        image_type = "url" if is_string_url(image) else "description"
         prompt = (
-            f"Provide a short, catchy title for a news article that uses the following image, "
-            f"it must be grab the readers attention, so be creative: {image_url}"
+            f"Provide a short, catchy title for a news article that uses the following image "
+            f"{image_type}, it must be grab the readers attention, so be creative: {image}"
         )
 
         return self._text_generation_prompt(
@@ -216,17 +223,17 @@ class Wizard:
 
     def compare_images(
         self,
-        image_url_1: str,
-        image_url_2: str,
+        image_1: str,
+        image_2: str,
     ) -> ImageAnalysis:
         """
         Compares two images and returns a score indicating their similarity.
 
         Parameters
         ----------
-        image_url_1 : str
-        image_url_2 : str
-            The urls of the two images that should be compared.
+        image_1 : str
+        image_2 : str
+            The urls or descriptions of the two images that should be compared.
 
         Returns
         -------
@@ -234,6 +241,8 @@ class Wizard:
             A tuple containing both a similarity score between 0 and 100, and an
             explanation of the similarities and differences.
         """
+        image_1_type = "url" if is_string_url(image_1) else "description"
+        image_2_type = "url" if is_string_url(image_2) else "description"
         prompt = (
             f"Compare these two images and give an integer score from 0 to 100 "
             f"inclusive on how similar they are, along with an explanation.\n"
@@ -243,7 +252,7 @@ class Wizard:
             f' "explanation": "Some explanation of the similarities and differences."'
             f"}}\n"
             f"Only provide the json and nothing else in the response."
-            f":\nImage 1: {image_url_1}\nImage 2: {image_url_2}\n"
+            f":\nImage {image_1_type} 1: {image_1}\nImage {image_2_type} 2: {image_2}\n"
         )
 
         response = openai.Completion.create(

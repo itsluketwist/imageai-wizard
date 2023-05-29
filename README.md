@@ -30,32 +30,31 @@ image_url = "https://upload.wikimedia.org/wikipedia/en/thumb/4/47/Iron_Man_%28ci
 
 # generate text based responses about the image
 description = wiz.generate_description(
-    image_url=image_url,
+    image=image_url,
     persona=Persona.CHILD,
     tone=Tone.CHEERFUL,
 )
 print(f"Description: {description}")
 
 caption = wiz.generate_caption(
-    image_url=image_url,
+    image=image_url,
     persona=Persona.ACADEMIC_PROFESSOR,
     tone=Tone.ANGRY,
 )
 print(f"Caption: {caption}")
 
 title = wiz.generate_title(
-    image_url=image_url,
+    image=image_url,
     persona=Persona.BUSINESS_PERSON,
     tone=Tone.CONFUSED,
 )
 print(f"Title: {title}")
 
-
 # generate a comparison to another image
 another_image_url = "https://e0.pxfuel.com/wallpapers/971/526/desktop-wallpaper-robot-and-cat-red-robot.jpg"
 comparison = wiz.compare_images(
-    image_url_1=image_url,
-    image_url_2=another_image_url,
+    image_1=image_url,
+    image_2=another_image_url,
 )
 print(f"Comparison: {comparison}")
 ```
