@@ -1,10 +1,9 @@
 import json
 import os
-from typing import Optional, Union
 
 import openai
 
-from .constants import (
+from imageai_wizard.constants import (
     DEFAULT_MAX_TOKENS,
     DEFAULT_MODEL,
     DEFAULT_TEMPERATURE,
@@ -12,8 +11,8 @@ from .constants import (
     Persona,
     Tone,
 )
-from .types import ImageAnalysis
-from .utils import is_string_url
+from imageai_wizard.types import ImageAnalysis
+from imageai_wizard.utils import is_string_url
 
 
 class Wizard:
@@ -23,7 +22,7 @@ class Wizard:
 
     def __init__(
         self,
-        api_key: Optional[str] = None,
+        api_key: str | None = None,
         model: str = DEFAULT_MODEL,
         max_tokens: int = DEFAULT_MAX_TOKENS,
         temperature: float = DEFAULT_TEMPERATURE,
@@ -33,7 +32,7 @@ class Wizard:
 
         Parameters
         ----------
-        api_key : Optional[str]
+        api_key : str | None
             Your OpenAI API key, if `None`, the `IMAGEAI_WIZARD_OPEN_AI_KEY` environment
             variable will be used.
         model : str
@@ -64,8 +63,8 @@ class Wizard:
         self,
         initial_prompt: str,
         length: int,
-        persona: Union[Persona, str, None],
-        tone: Union[Tone, str, None],
+        persona: Persona | str | None,
+        tone: Tone | str | None,
     ) -> str:
         """
         Complete a text generation prompt, using the given options.
@@ -76,9 +75,9 @@ class Wizard:
             The starting point for the text generation.
         length : int
             Approximate length of the response.
-        persona : Union[Persona, str, None]
+        persona : Persona | str | None
             What persona should be considered when giving the response.
-        tone: Union[Tone, str, None]
+        tone: Tone | str | None
             What tone of voice should be used in the response.
 
         Returns
@@ -111,8 +110,8 @@ class Wizard:
         self,
         image: str,
         length: int = 50,
-        persona: Union[Persona, str, None] = None,
-        tone: Union[Tone, str, None] = None,
+        persona: Persona | str | None = None,
+        tone: Tone | str | None = None,
     ) -> str:
         """
         Generates a detailed description for any given image.
@@ -123,9 +122,9 @@ class Wizard:
             The url or description of the image.
         length : int
             Approximate length of the response.
-        persona : Union[Persona, str, None]
+        persona : Persona | str | None
             What persona should be considered when giving the response.
-        tone: Union[Tone, str, None]
+        tone: Tone | str | None
             What tone of voice should be used in the response.
 
         Returns
@@ -147,8 +146,8 @@ class Wizard:
         self,
         image: str,
         length=20,
-        persona: Union[Persona, str, None] = None,
-        tone: Union[Tone, str, None] = None,
+        persona: Persona | str | None = None,
+        tone: Tone | str | None = None,
     ) -> str:
         """
         Generates an interesting caption for any given image.
@@ -159,9 +158,9 @@ class Wizard:
             The url or description of the image.
         length : int
             Approximate length of the response.
-        persona : Union[Persona, str, None]
+        persona : Persona | str | None
             What persona should be considered when giving the response.
-        tone: Union[Tone, str, None]
+        tone: Tone | str | None
             What tone of voice should be used in the response.
 
         Returns
@@ -186,8 +185,8 @@ class Wizard:
         self,
         image: str,
         length=10,
-        persona: Union[Persona, str, None] = None,
-        tone: Union[Tone, str, None] = None,
+        persona: Persona | str | None = None,
+        tone: Tone | str | None = None,
     ) -> str:
         """
         Generates a captivating title for any given image.
@@ -198,9 +197,9 @@ class Wizard:
             The url or description of the image.
         length : int
             Approximate length of the response.
-        persona : Union[Persona, str, None]
+        persona : Persona | str | None
             What persona should be considered when giving the response.
-        tone: Union[Tone, str, None]
+        tone: Tone | str | None
             What tone of voice should be used in the response.
 
         Returns

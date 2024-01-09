@@ -6,7 +6,6 @@ def is_string_url(string: str) -> bool:
     """
     Quickly check if a provided string is a valid URL or not.
 
-
     Parameters
     ----------
     string : str
