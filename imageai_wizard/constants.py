@@ -7,7 +7,7 @@ DEFAULT_MAX_TOKENS = 200
 
 DEFAULT_TEMPERATURE = 0.7
 
-DEFAULT_MODEL = "text-davinci-002"
+DEFAULT_MODEL = "gpt-3.5-turbo"
 
 
 class Persona(StrEnum):

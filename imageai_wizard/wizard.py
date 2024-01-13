@@ -26,31 +26,35 @@ class Wizard:
         model: str = DEFAULT_MODEL,
         max_tokens: int = DEFAULT_MAX_TOKENS,
         temperature: float = DEFAULT_TEMPERATURE,
+        timeout: int = 5,
     ) -> None:
         """
         Constructor for the ImageAIWizard class.
 
         Parameters
         ----------
-        api_key : str | None
+        api_key: str | None = None
             Your OpenAI API key, if `None`, the `IMAGEAI_WIZARD_OPEN_AI_KEY` environment
             variable will be used.
-        model : str
+        model: str = DEFAULT_MODEL
             Which OpenAI text model engine to use.
-        max_tokens : int
+        max_tokens: int = DEFAULT_MAX_TOKENS
             The maximum tokens to request when generating a text response from the API.
-        temperature : int
+        temperature: int = DEFAULT_TEMPERATURE
             What sampling temperature to use when querying the API, between 0 and 2.
+        timeout: int = 5
+            Timeout for calls to the OpenAI API. Defaults to 5 seconds.
         """
         self.api_key = api_key or os.getenv(IMAGEAI_WIZARD_OPEN_AI_KEY, None)
 
         if self.api_key is None:
             raise ValueError("A valid OpenAI API key is required.")
 
-        openai.api_key = api_key
+        self.client = openai.OpenAI(api_key=api_key)
 
         self._model = model
         self._max_tokens = max_tokens
+        self._timeout = timeout
 
         if temperature < 0:
             self._temperature = 0.0
@@ -71,11 +75,11 @@ class Wizard:
 
         Parameters
         ----------
-        initial_prompt : str
+        initial_prompt: str
             The starting point for the text generation.
-        length : int
+        length: int
             Approximate length of the response.
-        persona : Persona | str | None
+        persona: Persona | str | None
             What persona should be considered when giving the response.
         tone: Tone | str | None
             What tone of voice should be used in the response.
@@ -96,15 +100,20 @@ class Wizard:
         if tone is not None:
             prompt += f"Use a {persona} tone of voice.\n"
 
-        response = openai.Completion.create(
-            prompt=prompt,
-            engine=self._model,
+        response = self.client.chat.completions.create(
+            model=self._model,
+            messages=[
+                {
+                    "role": "user",
+                    "content": prompt,
+                }
+            ],
+            timeout=self._timeout,
             temperature=self._temperature,
             max_tokens=self._max_tokens,
             n=1,
         )
-        response = response.choices[0].text.strip()
-        return response
+        return response.choices[0].message.content.strip()
 
     def generate_description(
         self,
@@ -118,13 +127,13 @@ class Wizard:
 
         Parameters
         ----------
-        image : str
+        image: str
             The url or description of the image.
-        length : int
+        length: int = 50
             Approximate length of the response.
-        persona : Persona | str | None
+        persona: Persona | str | None = None
             What persona should be considered when giving the response.
-        tone: Tone | str | None
+        tone: Tone | str | None = None
             What tone of voice should be used in the response.
 
         Returns
@@ -145,7 +154,7 @@ class Wizard:
     def generate_caption(
         self,
         image: str,
-        length=20,
+        length: int = 20,
         persona: Persona | str | None = None,
         tone: Tone | str | None = None,
     ) -> str:
@@ -154,13 +163,13 @@ class Wizard:
 
         Parameters
         ----------
-        image : str
+        image: str
             The url or description of the image.
-        length : int
+        length: int = 20
             Approximate length of the response.
-        persona : Persona | str | None
+        persona: Persona | str | None = None
             What persona should be considered when giving the response.
-        tone: Tone | str | None
+        tone: Tone | str | None = None
             What tone of voice should be used in the response.
 
         Returns
@@ -184,7 +193,7 @@ class Wizard:
     def generate_title(
         self,
         image: str,
-        length=10,
+        length: int = 10,
         persona: Persona | str | None = None,
         tone: Tone | str | None = None,
     ) -> str:
@@ -193,13 +202,13 @@ class Wizard:
 
         Parameters
         ----------
-        image : str
+        image: str
             The url or description of the image.
-        length : int
+        length: int = 10
             Approximate length of the response.
-        persona : Persona | str | None
+        persona: Persona | str | None = None
             What persona should be considered when giving the response.
-        tone: Tone | str | None
+        tone: Tone | str | None = None
             What tone of voice should be used in the response.
 
         Returns
@@ -230,8 +239,8 @@ class Wizard:
 
         Parameters
         ----------
-        image_1 : str
-        image_2 : str
+        image_1: str
+        image_2: str
             The urls or descriptions of the two images that should be compared.
 
         Returns

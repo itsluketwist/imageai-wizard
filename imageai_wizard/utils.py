@@ -8,7 +8,7 @@ def is_string_url(string: str) -> bool:
 
     Parameters
     ----------
-    string : str
+    string: str
         The string that should be checked if it's a url.
 
     Returns

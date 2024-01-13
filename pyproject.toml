@@ -7,7 +7,7 @@ packages = ["imageai_wizard"]
 
 [project]
 name = "imageai_wizard"
-version = "0.0.0"
+version = "0.0.1"
 description = "An OpenAI API powered image utility library."
 readme = "README.md"
 authors = [{ name = "Lukas Twist", email = "itsluketwist@gmail.com" }]
@@ -19,7 +19,7 @@ classifiers = [
 ]
 keywords = ["image", "utility"]
 dependencies = [
-    "openai < 1.0.0",
+    "openai ~= 1.0.0",
 ]
 requires-python = ">=3.10"
 
